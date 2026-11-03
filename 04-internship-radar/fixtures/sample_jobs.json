@@ -1,0 +1,60 @@
+{
+  "jobs": [
+    {
+      "title": "Cloud Security Engineer Internship (6 months)",
+      "company": "Siemens",
+      "location": "Munich, Germany",
+      "url": "https://example.com/jobs/1",
+      "summary": "6-month end of studies internship. AWS, Terraform, Kubernetes, IAM. Paid, Vergütung attractive. German B1 a plus.",
+      "posted": "2026-11-01"
+    },
+    {
+      "title": "DevSecOps Working Student",
+      "company": "Adyen",
+      "location": "Amsterdam, Netherlands",
+      "url": "https://example.com/jobs/2",
+      "summary": "CI/CD pipelines, Docker, security scanning. Internship, paid. Python, Linux.",
+      "posted": "2026-10-28"
+    },
+    {
+      "title": "Software Engineer Intern - Frontend",
+      "company": "SomeStartup",
+      "location": "Paris, France",
+      "url": "https://example.com/jobs/3",
+      "summary": "React, CSS, design systems. 6 mois. Not a security role.",
+      "posted": "2026-10-30"
+    },
+    {
+      "title": "Cloud Infrastructure Intern",
+      "company": "AWS",
+      "location": "Seattle, United States",
+      "url": "https://example.com/jobs/4",
+      "summary": "AWS, Terraform, security. Internship in the USA.",
+      "posted": "2026-10-20"
+    },
+    {
+      "title": "Praktikum Cybersecurity & Cloud",
+      "company": "Swisscom",
+      "location": "Zürich, Switzerland",
+      "url": "https://example.com/jobs/5",
+      "summary": "Cloud security, Azure, Kubernetes, pentest. 6 mois. Gehalt / paid. Deutschland/Schweiz.",
+      "posted": "2026-11-02"
+    },
+    {
+      "title": "Marketing Intern",
+      "company": "AdCo",
+      "location": "Barcelona, Spain",
+      "url": "https://example.com/jobs/6",
+      "summary": "Social media and content. No tech.",
+      "posted": "2026-10-15"
+    },
+    {
+      "title": "Cloud Security Engineer Internship (6 months)",
+      "company": "Siemens",
+      "location": "Munich, Germany",
+      "url": "https://example.com/jobs/1",
+      "summary": "Duplicate posting of job 1 to test dedupe.",
+      "posted": "2026-11-01"
+    }
+  ]
+}
