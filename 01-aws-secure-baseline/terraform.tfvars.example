@@ -1,0 +1,4 @@
+owner       = "ilyas"
+alert_email = "ton.email@exemple.com"
+# region           = "eu-west-3"
+# enable_guardduty = true
