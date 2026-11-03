@@ -1,0 +1,24 @@
+# Sources d'offres. Deux types gérés : "rss" (flux RSS/Atom) et "json" (API renvoyant du JSON).
+# Ajoute les tiennes. Beaucoup de job boards exposent un flux ; cherche leur page /feed ou leur API.
+# NB : les URLs ci-dessous sont des EXEMPLES de forme — vérifie qu'elles existent et sont autorisées
+# avant usage, et préfère toujours une API officielle quand elle existe.
+
+sources:
+  - name: example-rss
+    type: rss
+    url: "https://example.com/jobs/feed?q=cloud+security&l=europe"
+    enabled: false        # mets true quand tu as une vraie URL
+
+  - name: example-json-api
+    type: json
+    url: "https://api.example.com/v1/jobs?query=cloud%20security&location=europe"
+    enabled: false
+    # chemins JSON pour extraire les champs (notation pointée, [] = liste à itérer)
+    mapping:
+      list: "results[]"
+      title: "title"
+      company: "company.name"
+      location: "location.name"
+      url: "absolute_url"
+      summary: "contents"
+      posted: "updated_at"
