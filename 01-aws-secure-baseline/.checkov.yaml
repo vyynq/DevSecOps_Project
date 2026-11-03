@@ -1,0 +1,33 @@
+# Findings Checkov acceptés, avec justification.
+# Résultat brut sans ce fichier : une dizaine de contrôles en échec (Checkov 3.4).
+# En entretien, c'est CE fichier qui montre que tu comprends les compromis :
+# on ne corrige pas tout aveuglément, on décide et on documente.
+directory:
+  - .
+framework:
+  - terraform
+compact: true
+skip-check:
+  # Faux positif : dans une KEY policy KMS, "Resource: *" désigne la clé elle-même
+  # (la policy est attachée à la clé). C'est la syntaxe documentée par AWS.
+  - CKV_AWS_111
+  - CKV_AWS_356
+  - CKV_AWS_109
+  # Notification SNS à chaque fichier livré par CloudTrail : bruit inutile ici,
+  # les alertes passent par EventBridge (detection.tf).
+  - CKV_AWS_252
+  # Envoi de CloudTrail vers CloudWatch Logs : utile pour des alarmes métriques,
+  # mais payant à l'ingestion. Remplacé ici par des règles EventBridge.
+  # -> piste "aller plus loin" : l'activer et créer des metric filters CIS.
+  - CKV2_AWS_10
+  # GuardDuty au niveau d'une AWS Organization : pas d'Organization dans un compte perso.
+  - CKV2_AWS_3
+  # Liste des AZ non figée : on ne prend que les 2 premières via slice(), donc
+  # l'ajout d'une AZ par AWS ne change rien au déploiement.
+  - CKV_AWS_394
+  # Réplication cross-region du bucket de logs : double le coût, inutile pour un lab.
+  - CKV_AWS_144
+  # Access logging du bucket de logs : demanderait un 2e bucket ("les logs des logs").
+  - CKV_AWS_18
+  # Notifications d'événements S3 : aucun traitement aval des logs dans ce projet.
+  - CKV2_AWS_62
