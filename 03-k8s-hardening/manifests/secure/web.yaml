@@ -1,0 +1,65 @@
+# VERSION DURCIE — la même application, configurée correctement.
+# Namespace avec Pod Security "restricted" appliqué par Kubernetes lui-même.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: secure
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/enforce-version: latest
+---
+# ServiceAccount dédié, SANS montage automatique du token.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: web
+  namespace: secure
+automountServiceAccountToken: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: secure
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: web }
+  template:
+    metadata:
+      labels: { app: web }
+    spec:
+      serviceAccountName: web
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: web
+          # image immuable épinglée par digest en vrai ; ici un tag précis + nginx "unprivileged"
+          # (écoute sur un port > 1024, donc pas besoin d'être root)
+          image: nginxinc/nginx-unprivileged:1.27-alpine
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests: { cpu: "50m", memory: "64Mi" }
+            limits: { cpu: "250m", memory: "128Mi" }
+          # nginx a besoin d'écrire ses fichiers temporaires : on fournit des volumes en mémoire
+          # plutôt que d'ouvrir tout le système de fichiers en écriture.
+          volumeMounts:
+            - { name: tmp, mountPath: /tmp }
+            - { name: cache, mountPath: /var/cache/nginx }
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: cache
+          emptyDir: {}
