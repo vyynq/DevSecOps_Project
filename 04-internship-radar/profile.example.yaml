@@ -1,0 +1,70 @@
+# Ton profil : c'est lui qui pilote le scoring. Ajuste librement les poids.
+titles_must_match_any:   # au moins un de ces termes dans le titre ou le résumé
+  - cloud
+  - security
+  - sécurité
+  - cybersecurity
+  - devsecops
+  - sre
+  - infrastructure
+
+keywords:                # chaque terme présent ajoute son poids au score
+  aws: 6
+  azure: 4
+  gcp: 4
+  terraform: 6
+  kubernetes: 5
+  docker: 3
+  iam: 4
+  security: 5
+  cybersecurity: 5
+  "cloud security": 8
+  devsecops: 6
+  pentest: 3
+  ci/cd: 2
+  linux: 2
+  python: 2
+
+# Localisation : l'Europe est recherchée, la zone germanophone bonifiée (allemand B1).
+locations_preferred:
+  germany: 8
+  deutschland: 8
+  switzerland: 7
+  schweiz: 7
+  austria: 6
+  netherlands: 6
+  luxembourg: 6
+  ireland: 5
+  spain: 5
+  barcelona: 5
+  belgium: 4
+  europe: 3
+  remote: 4
+locations_excluded:      # score fortement pénalisé si présent
+  - united states
+  - usa
+  - india
+  - canada
+
+duration_keywords:       # un stage de 6 mois est la cible
+  "6 month": 6
+  "6-month": 6
+  "6 mois": 6
+  "fin d'études": 6
+  "end of studies": 5
+  internship: 3
+  stage: 3
+  praktikum: 4
+  working student: 2
+  werkstudent: 2
+
+pay_signals:             # indice de rémunération = bon signe
+  - salary
+  - paid
+  - rémunér
+  - vergütung
+  - gehalt
+  - "€"
+  - compensation
+
+min_score_to_show: 10    # en dessous, l'offre n'apparaît pas dans le dashboard
