@@ -1,0 +1,46 @@
+# Default deny : par défaut, aucun pod du namespace "secure" ne peut émettre
+# ni recevoir de trafic. On ré-autorise ensuite seulement le strict nécessaire.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: secure
+spec:
+  podSelector: {}            # tous les pods du namespace
+  policyTypes: [Ingress, Egress]
+---
+# On autorise uniquement la résolution DNS en sortie (sinon plus rien ne résout les noms).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-egress
+  namespace: secure
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector: {}
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - { protocol: UDP, port: 53 }
+        - { protocol: TCP, port: 53 }
+---
+# Exemple : autoriser l'entrée vers "web" uniquement depuis les pods étiquetés role=frontend.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-web-ingress
+  namespace: secure
+spec:
+  podSelector:
+    matchLabels: { app: web }
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: { role: frontend }
+      ports:
+        - { protocol: TCP, port: 8080 }

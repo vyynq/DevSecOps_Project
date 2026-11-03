@@ -1,0 +1,25 @@
+# RBAC minimal : le ServiceAccount "web" peut lire SES propres ConfigMaps, rien d'autre.
+# À comparer avec la version non sécurisée, où le token monté hérite de droits bien plus larges.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: web-readonly
+  namespace: secure
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: web-readonly
+  namespace: secure
+subjects:
+  - kind: ServiceAccount
+    name: web
+    namespace: secure
+roleRef:
+  kind: Role
+  name: web-readonly
+  apiGroup: rbac.authorization.k8s.io
