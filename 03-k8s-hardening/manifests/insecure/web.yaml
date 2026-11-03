@@ -1,0 +1,35 @@
+# ⚠️ VERSION VOLONTAIREMENT NON SÉCURISÉE — à des fins de comparaison pédagogique.
+# Ne JAMAIS déployer ce genre de manifest ailleurs que dans un cluster kind jetable.
+# Chaque ligne marquée (!) est un défaut : sache expliquer lequel.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: insecure
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: insecure
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: web }
+  template:
+    metadata:
+      labels: { app: web }
+    spec:
+      # (!) le token d'API du cluster est monté dans le pod : utile à un attaquant
+      automountServiceAccountToken: true
+      # (!) partage l'espace réseau du nœud
+      hostNetwork: true
+      containers:
+        - name: web
+          image: nginx:latest            # (!) tag mutable : on ne sait pas ce qui tourne
+          securityContext:
+            privileged: true             # (!) accès de niveau hôte
+            runAsUser: 0                 # (!) root
+            allowPrivilegeEscalation: true   # (!)
+          # (!) aucune limite de ressources : un pod peut épuiser le nœud
+          ports:
+            - containerPort: 80
